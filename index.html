@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vayupragna - Air Intelligence Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 24c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h2>Vayupragna</h2>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p>Initializing Air Intelligence Platform...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand-logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                        <path d="M16 24c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="24" cy="24" r="4" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Vayupragna</span>
+                    <span class="brand-subtitle">Air Intelligence</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Overview</span>
+                <div class="nav-items">
+                    <a href="#" class="nav-item active" data-section="dashboard">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Live Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="monitoring">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7,10 12,15 17,10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Live Monitoring</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <span class="nav-section-title">Analysis</span>
+                <div class="nav-items">
+                    <a href="#" class="nav-item" data-section="policy">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m6-6h4a2 2 0 0 1 2 2v3c0 1.1-.9 2-2 2h-4m-6 0a2 2 0 0 0-2-2m2 2a2 2 0 0 0 2 2m0-4a2 2 0 0 1 2-2m-2 2h4a2 2 0 0 1 2 2"></path>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Policy Simulator</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="analytics">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Analytics Hub</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <span class="nav-section-title">Community</span>
+                <div class="nav-items">
+                    <a href="#" class="nav-item" data-section="citizens">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Citizen Reports</span>
+                        <div class="nav-badge">12</div>
+                    </a>
+                    <a href="#" class="nav-item" data-section="alerts">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Alert Center</span>
+                        <div class="nav-badge alert">4</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <div class="status-text">
+                    <span class="status-label">System Status</span>
+                    <span class="status-value">All Systems Operational</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="page-title-container">
+                    <h1 id="pageTitle">Live Dashboard</h1>
+                    <p id="pageSubtitle">Real-time air quality monitoring and insights</p>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="stat-label">Data Accuracy</span>
+                        <span class="stat-value">94.7%</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-label">Last Updated</span>
+                        <span class="stat-value" id="lastUpdated">Just now</span>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="action-btn" id="refreshData" title="Refresh Data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                        </svg>
+                    </button>
+                    <button class="action-btn" id="exportData" title="Export Data">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </button>
+                    <button class="action-btn primary" id="addReport" title="Submit Report">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Container -->
+        <div class="content-container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <!-- Key Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m6-6h4a2 2 0 0 1 2 2v3c0 1.1-.9 2-2 2h-4m-6 0a2 2 0 0 0-2-2m2 2a2 2 0 0 0 2 2m0-4a2 2 0 0 1 2-2m-2 2h4a2 2 0 0 1 2 2"></path>
+                                </svg>
+                            </div>
+                            <span class="metric-title">Active Sensors</span>
+                        </div>
+                        <div class="metric-value" id="totalSensors">10</div>
+                        <div class="metric-change positive">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <span>+2 from last hour</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card warning">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <span class="metric-title">Critical Alerts</span>
+                        </div>
+                        <div class="metric-value" id="criticalAlerts">4</div>
+                        <div class="metric-change negative">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                                <polyline points="17 18 23 18 23 12"></polyline>
+                            </svg>
+                            <span>+1 from last hour</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card success">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <span class="metric-title">Reports Today</span>
+                        </div>
+                        <div class="metric-value" id="reportsToday">12</div>
+                        <div class="metric-change positive">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            <span>+8 from yesterday</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card info">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12,6 12,12 16,14"></polyline>
+                                </svg>
+                            </div>
+                            <span class="metric-title">System Uptime</span>
+                        </div>
+                        <div class="metric-value" id="systemUptime">99.2%</div>
+                        <div class="metric-change neutral">
+                            <span>Last 30 days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Air Quality Overview -->
+                    <div class="glass-card overview-card">
+                        <div class="card-header">
+                            <h3>Air Quality Overview</h3>
+                            <div class="card-actions">
+                                <button class="btn-icon" title="Refresh">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="23 4 23 10 17 10"></polyline>
+                                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overview-content">
+                            <div class="aqi-summary">
+                                <div class="aqi-main">
+                                    <div class="aqi-value" id="avgAqi">335</div>
+                                    <div class="aqi-label">Delhi NCR Average</div>
+                                    <div class="aqi-category hazardous">Hazardous</div>
+                                </div>
+                                <div class="aqi-locations">
+                                    <div class="location-item worst">
+                                        <span class="location-name" id="worstLocation">Faridabad - Ballabgarh</span>
+                                        <span class="location-aqi" id="worstAqi">652</span>
+                                    </div>
+                                    <div class="location-item best">
+                                        <span class="location-name" id="bestLocation">Noida - Sector 62</span>
+                                        <span class="location-aqi" id="bestAqi">129</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div class="glass-card map-card">
+                        <div class="card-header">
+                            <h3>Real-time Map</h3>
+                            <div class="map-controls">
+                                <div class="map-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-dot good"></div>
+                                        <span>Good</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot moderate"></div>
+                                        <span>Moderate</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot unhealthy"></div>
+                                        <span>Unhealthy</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot hazardous"></div>
+                                        <span>Hazardous</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="airQualityMap" class="air-quality-map"></div>
+                    </div>
+
+                    <!-- Forecast Chart -->
+                    <div class="glass-card forecast-card">
+                        <div class="card-header">
+                            <h3>24-Hour Forecast</h3>
+                            <div class="forecast-controls">
+                                <select class="select-control">
+                                    <option>Delhi Average</option>
+                                    <option>Gurgaon</option>
+                                    <option>Noida</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container" style="position: relative; height: 280px;">
+                            <canvas id="forecastChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Alerts -->
+                    <div class="glass-card alerts-card">
+                        <div class="card-header">
+                            <h3>Recent Alerts</h3>
+                            <a href="#" class="btn-link" data-section="alerts">View All</a>
+                        </div>
+                        <div class="alerts-list" id="recentAlerts">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Monitoring Section -->
+            <section id="monitoring" class="content-section">
+                <div class="monitoring-grid">
+                    <div class="glass-card sensors-card">
+                        <div class="card-header">
+                            <h3>Sensor Network Status</h3>
+                        </div>
+                        <div class="sensors-grid" id="sensorsGrid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Simulator Section -->
+            <section id="policy" class="content-section">
+                <div class="policy-layout">
+                    <div class="glass-card scenarios-card">
+                        <div class="card-header">
+                            <h3>Policy Scenarios</h3>
+                            <button class="btn btn-primary" id="runSimulation">Run Simulation</button>
+                        </div>
+                        <div class="scenarios-list" id="scenariosList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card results-card">
+                        <div class="card-header">
+                            <h3>Impact Analysis</h3>
+                        </div>
+                        <div class="results-content" id="simulationResults">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M9 11H5a2 2 0 0 0-2 2v3c0 1.1.9 2 2 2h4m6-6h4a2 2 0 0 1 2 2v3c0 1.1-.9 2-2 2h-4m-6 0a2 2 0 0 0-2-2m2 2a2 2 0 0 0 2 2m0-4a2 2 0 0 1 2-2m-2 2h4a2 2 0 0 1 2 2"></path>
+                                    </svg>
+                                </div>
+                                <h4>Select a Policy Scenario</h4>
+                                <p>Choose a policy from the left panel to view detailed impact analysis and projections.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="content-section">
+                <div class="analytics-grid">
+                    <div class="glass-card chart-card">
+                        <div class="card-header">
+                            <h3>Pollutant Trends</h3>
+                        </div>
+                        <div class="chart-container" style="position: relative; height: 320px;">
+                            <canvas id="trendsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card chart-card">
+                        <div class="card-header">
+                            <h3>Composition Analysis</h3>
+                        </div>
+                        <div class="chart-container" style="position: relative; height: 320px;">
+                            <canvas id="compositionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Citizen Reports Section -->
+            <section id="citizens" class="content-section">
+                <div class="citizens-layout">
+                    <div class="glass-card reports-card">
+                        <div class="card-header">
+                            <h3>Community Reports</h3>
+                            <button class="btn btn-primary" id="submitReport">Submit Report</button>
+                        </div>
+                        <div class="reports-list" id="reportsList">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card engagement-card">
+                        <div class="card-header">
+                            <h3>Community Engagement</h3>
+                        </div>
+                        <div class="engagement-stats">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value">127</div>
+                                    <div class="stat-label">Active Contributors</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value">2,845</div>
+                                    <div class="stat-label">Points Earned</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="stat-content">
+                                    <div class="stat-value">89%</div>
+                                    <div class="stat-label">Verification Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts Section -->
+            <section id="alerts" class="content-section">
+                <div class="glass-card alerts-dashboard">
+                    <div class="card-header">
+                        <h3>Alert Management</h3>
+                        <div class="alert-filters">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="critical">Critical</button>
+                            <button class="filter-btn" data-filter="high">High</button>
+                            <button class="filter-btn" data-filter="resolved">Resolved</button>
+                        </div>
+                    </div>
+                    <div class="alerts-container" id="alertsContainer">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Modals -->
+    <div id="locationModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalLocationName">Location Details</h3>
+                <button class="modal-close" onclick="closeModal('locationModal')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" id="locationModalBody">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div id="reportModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Pollution Report</h3>
+                <button class="modal-close" onclick="closeModal('reportModal')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm" class="report-form">
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <select class="form-control" id="reportLocation" required>
+                            <option value="">Select Location</option>
+                            <option value="Delhi - Anand Vihar">Delhi - Anand Vihar</option>
+                            <option value="Delhi - Connaught Place">Delhi - Connaught Place</option>
+                            <option value="Gurgaon - DLF Phase 1">Gurgaon - DLF Phase 1</option>
+                            <option value="Faridabad - Sector 16A">Faridabad - Sector 16A</option>
+                            <option value="Noida - Sector 62">Noida - Sector 62</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pollution Type</label>
+                        <select class="form-control" id="reportType" required>
+                            <option value="">Select Type</option>
+                            <option value="Industrial Smoke">Industrial Smoke</option>
+                            <option value="Vehicle Emissions">Vehicle Emissions</option>
+                            <option value="Construction Dust">Construction Dust</option>
+                            <option value="Burning Activities">Burning Activities</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Severity</label>
+                        <select class="form-control" id="reportSeverity" required>
+                            <option value="">Select Severity</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="reportDescription" rows="4" placeholder="Describe the pollution incident in detail..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('reportModal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
